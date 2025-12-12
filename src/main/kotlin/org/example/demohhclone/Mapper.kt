@@ -12,30 +12,29 @@ import org.springframework.stereotype.Component
 @Component
 class VacancyMapper {
 
-    fun toDto(v: Vacancy): VacancyResponseDto =
-        VacancyResponseDto(
-            id = v.id,
-            hhId = v.hhId,
-            name = v.name,
-            publishedAt = v.publishedAt,
-            url = v.url,
-            requirement = v.requirement,
-            responsibility = v.responsibility,
-            fromAmount = v.fromAmount,
-            toAmount = v.toAmount,
-            currency = v.currency,
-            gross = v.gross,
-            createdDate = v.createdDate,
-            modifiedDate = v.modifiedDate,
 
-            area = toAreaDto(v.area),
-            employer = toEmployerDto(v.employer),
-            schedule = v.schedule?.let { toScheduleDto(it) },
-            workingHours = v.workingHours?.let { toWorkingHoursDto(it) },
-            experience = toExperienceDto(v.experience),
-            employmentType = toEmploymentTypeDto(v.employmentType)
-        )
+    fun toDto(v: Vacancy): VacancyResponseDto = VacancyResponseDto(
+        id = v.id,
+        hhId = v.hhId,
+        name = v.name,
+        publishedAt = v.publishedAt,
+        url = v.url,
+        requirement = v.requirement,
+        responsibility = v.responsibility,
+        fromAmount = v.fromAmount,
+        toAmount = v.toAmount,
+        currency = v.currency,
+        gross = v.gross,
+        createdDate = v.createdDate,
+        modifiedDate = v.modifiedDate,
 
+        area = toAreaDto(v.area),
+        employer = toEmployerDto(v.employer),
+        schedule = v.schedule?.let { toScheduleDto(it) },
+        workingHours = v.workingHours?.let { toWorkingHoursDto(it) },
+        experience = toExperienceDto(v.experience),
+        employmentType = toEmploymentTypeDto(v.employmentType)
+    )
 
     private fun toAreaDto(a: Area) =
         AreaResponseDto(
@@ -44,7 +43,7 @@ class VacancyMapper {
             name = a.name,
             url = a.url,
 
-        )
+            )
 
     private fun toEmployerDto(e: Employer) =
         EmployerResponseDto(
@@ -68,7 +67,7 @@ class VacancyMapper {
             hhId = w.hhId,
             name = w.name,
 
-        )
+            )
 
     private fun toExperienceDto(e: Experience) =
         ExperienceResponseDto(
@@ -76,7 +75,7 @@ class VacancyMapper {
             hhId = e.hhId,
             name = e.name,
 
-        )
+            )
 
     private fun toEmploymentTypeDto(e: EmploymentType) =
         EmploymentTypeResponseDto(
@@ -84,4 +83,6 @@ class VacancyMapper {
             hhId = e.hhId,
             name = e.name
         )
+
+
 }

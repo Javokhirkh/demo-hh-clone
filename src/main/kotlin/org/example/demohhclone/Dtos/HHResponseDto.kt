@@ -20,31 +20,34 @@ data class HHListResponseDto(
 
 data class HHResponseDto(
     val id: Long,
-    val name: String,
-    val area: AreaDto,
+    val name: String?,
+    val area: AreaDto?,
     val salaryRange: SalaryRangeDto?,
-    val publishedAt: LocalDateTime,
-    val url: String,
-    val employer: EmployerDto,
+    val publishedAt: LocalDateTime?,
+    val url: String?,
+    val employer: EmployerDto?,
     val snippet: SnippetDto?,
     val schedule: ScheduleDto?,
     val workingHours: WorkingHoursDto?,
     val professionalRoles: List<ProfessionalRoleDto>?,
-    val experience : ExcperienceDto,
-    val employmentType: EmployementTypeDto
+    val experience: ExcperienceDto?,
+    val employment: EmployementTypeDto?
+) {
+    companion object
 
-){
-    companion object fun toEntity(
+    fun toEntity(
         area: Area,
-        employer: Employer, schedule: Schedule?,
-        workingHours: WorkingHours?, experience: Experience,
-        employmentType: EmploymentType,
+        employer: Employer,
+        schedule: Schedule?,
+        workingHours: WorkingHours?,
+        experience: Experience,
+        employmentType: EmploymentType
     ): Vacancy {
         return Vacancy(
             hhId = this.id,
-            name = this.name,
-            publishedAt = this.publishedAt,
-            url = this.url,
+            name = this.name ?: "Без названия",
+            publishedAt = this.publishedAt ?: LocalDateTime.now(),
+            url = this.url ?: "",
             requirement = this.snippet?.requirement,
             responsibility = this.snippet?.responsibility,
             fromAmount = this.salaryRange?.from,
@@ -58,102 +61,91 @@ data class HHResponseDto(
             experience = experience,
             employmentType = employmentType
         )
-
     }
 }
 
-data class EmployementTypeDto (
+data class EmployementTypeDto(
     val id: String,
     val name: String
-){
+) {
     fun toEntity(): EmploymentType {
         return EmploymentType(
             hhId = this.id,
             name = this.name
         )
-
     }
 }
 
-data class ExcperienceDto (
+data class ExcperienceDto(
     val id: String,
     val name: String
-){
+) {
     fun toEntity(): Experience {
         return Experience(
             hhId = this.id,
             name = this.name
         )
-
     }
 }
 
 data class ProfessionalRoleDto(
     val id: Long,
     val name: String
-){
+) {
     fun toEntity(): ProfessionalRole {
         return ProfessionalRole(
             hhId = this.id,
             name = this.name
         )
-
     }
 }
 
 data class WorkingHoursDto(
     val id: String,
     val name: String
-){
+) {
     fun toEntity(): WorkingHours {
         return WorkingHours(
             hhId = this.id,
             name = this.name
         )
-
     }
 }
 
 data class ScheduleDto(
     val id: String,
     val name: String
-){
+) {
     fun toEntity(): Schedule {
         return Schedule(
             hhId = this.id,
             name = this.name
         )
-
     }
 }
 
-// one to one bolishi kerak edi ln vacancy entityga qoshib yubordim
 data class SnippetDto(
     val requirement: String?,
     val responsibility: String?
 )
 
-data class EmployerDto (
-    val id:Long,
-    val name:String,
-    val url:String,
-    val countryId:Long,
-){
+data class EmployerDto(
+    val id: Long,
+    val name: String?,  // Made nullable
+    val url: String?,  // Made nullable
+    val countryId: Long?
+) {
     fun toEntity(): Employer {
         return Employer(
             hhId = this.id,
-            name = this.name,
-            url = this.url,
-            countryId = this.countryId
+            name = this.name ?: "Неизвестный работодатель",
+            url = this.url ?: "",
+            countryId = this.countryId ?: 0L
         )
-
     }
 }
 
-
-
-// one to one bolishi kerak edi ln vacancy entityga qoshib yubordim
-data class SalaryRangeDto (
+data class SalaryRangeDto(
     val from: Int?,
     val to: Int?,
     val currency: String?,
@@ -162,15 +154,14 @@ data class SalaryRangeDto (
 
 data class AreaDto(
     val id: String,
-    val name: String,
-    val url: String
-){
+    val name: String?,  // Made nullable
+    val url: String?  // Made nullable
+) {
     fun toEntity(): Area {
         return Area(
             hhId = this.id,
-            name = this.name,
-            url = this.url
+            name = this.name ?: "Неизвестная область",
+            url = this.url ?: ""
         )
-
     }
 }

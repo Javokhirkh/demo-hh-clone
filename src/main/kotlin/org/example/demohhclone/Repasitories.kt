@@ -2,6 +2,7 @@ package org.example.demohhclone
 
 import feign.Param
 import jakarta.persistence.EntityManager
+import org.example.demohhclone.Dtos.VacancyResponseDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
@@ -82,6 +83,12 @@ interface VacancyRepository: BaseRepository<Vacancy>{
     """)
     fun findAllNotDeletedAndBeforeModifiedDate(@Param("startTime") startTime: LocalDateTime): List<Vacancy>
 
+    @Query("""
+        select v from Vacancy v join RequestObjectVacancy c on v = c.vacancy join RequestObject r on c.requestObject= r
+        where r.name = :name and v.deleted=false 
+    """)
+    fun findByRequestObjectAndDeletedFalse(@Param("name") name: String, pageable: Pageable): Page<Vacancy>
+
 }
 @Repository
 interface EmployerRepository: BaseRepository<Employer>{
@@ -126,6 +133,7 @@ interface VacancyProfessionalRoleRepository: BaseRepository<VacancyProfessionalR
 
 @Repository
 interface RequestObjectRepository : BaseRepository<RequestObject>{
+    fun findByNameAndDeletedFalse(name: String): RequestObject?
 
 }
 

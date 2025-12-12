@@ -15,21 +15,6 @@ class VacancyController(
     private val vacancyMapper: VacancyMapper
 ) {
 
-    @GetMapping
-    fun getVacancies(
-        @RequestParam(defaultValue = "") name: String,
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "20") size: Int,
-        @RequestParam(defaultValue = "publishedAt") sortBy: String,
-        @RequestParam(defaultValue = "DESC") direction: String
-    ): ResponseEntity<Page<VacancyResponseDto>> {
-        val sort = Sort.by(Sort.Direction.fromString(direction), sortBy)
-        val pageable = PageRequest.of(page, size, sort)
-
-        val vacancies = vacancyService.searchVacancies(name, pageable)
-        return ResponseEntity.ok(vacancies)
-    }
-
     @GetMapping("/{id}")
     fun getVacancyById(@PathVariable id: Long): ResponseEntity<VacancyResponseDto> {
         val vacancy = vacancyService.getVacancyById(id)
